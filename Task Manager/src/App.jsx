@@ -3,33 +3,56 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+const TaskList = ({ tasks }) => {
+  return (
+    <ul>
+      {tasks.map(task => (
+        <li key={task.id} className={task.completed ? 'completed' : ''}>
+          {task.title}
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+const App = () => {
+  const [newTask, setNewTask] = useState('');
+  const [taskList, setTaskList] = useState([
+    { id: 1, title: 'Task 1', completed: false },
+    { id: 2, title: 'Task 2', completed: true },
+    { id: 3, title: 'Task 3', completed: false },
+  ]);
+
+  const handleInputChange = event => {
+    setNewTask(event.target.value);
+  };
+
+  const handleAddTask = () => {
+    if (newTask.trim() !== '') {
+      const newTaskObj = {
+        id: Date.now(),
+        title: newTask,
+        completed: false
+      };
+
+      setTaskList(prevTaskList => [...prevTaskList, newTaskObj]);
+      setNewTask('');
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div>
+      <h1>To-Do List</h1>
+      <input
+        type="text"
+        value={newTask}
+        onChange={handleInputChange}
+        placeholder="Enter a new task"
+      />
+      <button onClick={handleAddTask}>Add Task</button>
+      <TaskList tasks={taskList} />
+    </div>
+  );
+};
 
-export default App
+export default App;
