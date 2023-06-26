@@ -17,9 +17,9 @@ const TaskList = ({ tasks }) => {
 const App = () => {
   const [newTask, setNewTask] = useState('');
   const [taskList, setTaskList] = useState([
-    { id: 1, title: 'Task 1', completed: false },
-    { id: 2, title: 'Task 2', completed: true },
-    { id: 3, title: 'Task 3', completed: false },
+    { id: 1, title: 'Walk the dog', completed: false },
+    { id: 2, title: 'Empty the trash', completed: true },
+    { id: 3, title: 'Cook dinner', completed: false },
   ]);
 
   const handleInputChange = event => {
