@@ -1,12 +1,19 @@
 import { useState } from 'react'
-//import './App.css'
 import './style.css'
 
-const TaskList = ({ tasks }) => {
+const TaskList = ({ tasks, onTaskComplete }) => {
+  const handleTaskComplete = (taskId ) => {
+    onTaskComplete(taskId);
+  }
   return (
     <ul>
       {tasks.map(task => (
-        <li key={task.id} className={task.completed ? 'completed' : ''}>
+         <li key={task.id} className={`task ${task.completed ? 'completed' : ''}`}>
+          <input
+          type = "checkbox"
+          checked = {task.complete}
+          onChange={() => handleTaskComplete(task.id)}
+          />
           {task.title}
         </li>
       ))}
@@ -23,7 +30,7 @@ const App = () => {
   ]);
 
   const handleInputChange = event => {
-    setNewTask(event.target.value);
+    setNewTask(event.target.value); 
   };
 
   const handleAddTask = () => {
@@ -37,6 +44,14 @@ const App = () => {
       setTaskList(prevTaskList => [...prevTaskList, newTaskObj]);
       setNewTask('');
     }
+  };
+
+  const handleTaskComplete = (taskId) => {
+    setTaskList(prevTaskList =>
+      prevTaskList.map(task =>
+        task.id === taskId ? { ...task, completed: !task.completed } : task
+      )
+    );
   };
 
   return (
