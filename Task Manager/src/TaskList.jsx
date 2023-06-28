@@ -1,4 +1,4 @@
-const TaskList = ({ tasks, onTaskComplete }) => {
+function TaskList ({ tasks, onTaskComplete })  {
     const handleTaskComplete = (taskId) => {
       onTaskComplete(taskId);
     };
@@ -20,3 +20,5 @@ const TaskList = ({ tasks, onTaskComplete }) => {
       </ul>
     );
   };
+
+  export default TaskList;

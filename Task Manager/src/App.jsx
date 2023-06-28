@@ -1,66 +1,12 @@
 import { useState } from 'react';
 import './style.css';
-// import TaskList from './TaskList'
-// import TaskForm from './TaskForm' 
-// import above files, make app.jsx cleaner appearance
-
-const TaskList = ({ tasks, onTaskComplete }) => {
-  const handleTaskComplete = (taskId) => {
-    onTaskComplete(taskId);
-  };
-  return (
-    <ul>
-      {tasks.map((task) => (
-        <li
-          key={task.id}
-          className={`task ${task.completed ? 'completed' : ''}`}
-        >
-          <input
-            type="checkbox"
-            checked={task.completed}
-            onChange={() => handleTaskComplete(task.id)}
-          />
-          {task.title}
-        </li>
-      ))}
-    </ul>
-  );
-};
-
-const TaskForm = ({ onAddTask }) => {
-  const [newTask, setNewTask] = useState('');
-
-  const handleInputChange = (event) => {
-    setNewTask(event.target.value);
-  };
-
-  const handleAddTask = (event) => {
-    event.preventDefault();
-    if (newTask.trim() !== '') {
-      onAddTask(newTask);
-      setNewTask('');
-    }
-  };
-
-  return (
-    <div className="form-container">
-      <form onSubmit={handleAddTask}>
-        <input
-          type="text"
-          value={newTask}
-          onChange={handleInputChange}
-          placeholder="Enter a new task"
-        />
-        <button type="submit">Add Task</button>
-      </form>
-    </div>
-  );
-};
+import TaskList from './taskList'
+import TaskForm from './taskForm' 
 
 const App = () => {
   const [taskList, setTaskList] = useState([
     { id: 1, title: 'Walk the dog', completed: false },
-    { id: 2, title: 'Empty the trash', completed: true },
+    { id: 2, title: 'Empty the trash', completed: false },
     { id: 3, title: 'Cook dinner', completed: false },
   ]);
 

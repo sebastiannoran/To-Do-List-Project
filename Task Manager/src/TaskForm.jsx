@@ -1,4 +1,4 @@
-const TaskForm = ({ onAddTask }) => {
+function TaskForm  ({ onAddTask }) {
     const [newTask, setNewTask] = useState('');
   
     const handleInputChange = (event) => {
@@ -27,3 +27,5 @@ const TaskForm = ({ onAddTask }) => {
       </div>
     );
   };
+
+  export default TaskForm;
