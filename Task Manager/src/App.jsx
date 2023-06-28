@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import './style.css';
+// import TaskList from './TaskList'
+// import TaskForm from './TaskForm' 
+// import above files, make app.jsx cleaner appearance
 
 const TaskList = ({ tasks, onTaskComplete }) => {
   const handleTaskComplete = (taskId) => {
