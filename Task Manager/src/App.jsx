@@ -25,46 +25,20 @@ const TaskList = ({ tasks, onTaskComplete }) => {
   );
 };
 
-const TaskForm = ({ onAddTask, onLoadTasks }) => {
+const TaskForm = ({ onAddTask }) => {
   const [newTask, setNewTask] = useState('');
 
   const handleInputChange = (event) => {
     setNewTask(event.target.value);
   };
 
-  const handleAddTask = async (event) => {
+  const handleAddTask = (event) => {
     event.preventDefault();
     if (newTask.trim() !== '') {
-      try {
-        const response = await fetch('http://localhost:3000/task', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            title: newTask,
-            completed: false,
-          }),
-        });
-        const task = await response.json();
-        onAddTask(task);
-        setNewTask('');
-      } catch (error) {
-        console.error('Error:', error);
-      }
+      onAddTask(newTask);
+      setNewTask('');
     }
   };
-
-  const handleLoadTasks = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/task');
-      const tasks = await response.json();
-      onLoadTasks(tasks);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
 
   return (
     <div className="form-container">
@@ -77,7 +51,6 @@ const TaskForm = ({ onAddTask, onLoadTasks }) => {
         />
         <button type="submit">Add Task</button>
       </form>
-      <button onClick={handleLoadTasks}>Load Tasks</button>
     </div>
   );
 };
@@ -85,49 +58,48 @@ const TaskForm = ({ onAddTask, onLoadTasks }) => {
 const App = () => {
   const [taskList, setTaskList] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [fetchButtonClicked, setFetchButtonClicked] = useState(false);
 
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/task');
-        const tasks = await response.json();
-        setTaskList(tasks);
-      } catch (error) {
-        console.error('Error:', error);
-      }
+    if (fetchButtonClicked) {
+      const fetchTasks = async () => {
+        try {
+          const response = await fetch('http://localhost:3000/task');
+          const tasks = await response.json();
+          setTaskList(tasks);
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      };
+
+      fetchTasks();
+    }
+  }, [fetchButtonClicked]);
+
+  const handleAddTask = (newTask) => {
+    const newTaskObj = {
+      id: Date.now(),
+      title: newTask,
+      completed: false,
     };
-
-    fetchTasks();
-  }, []);
-
-  const handleAddTask = (task) => {
-    setTaskList((prevTaskList) => [...prevTaskList, task]);
+    setTaskList((prevTaskList) => [...prevTaskList, newTaskObj]);
     setShowForm(false);
   };
 
-  const handleTaskComplete = async (taskId) => {
-    try {
-      const task = taskList.find((task) => task.id === taskId);
-      const updatedTask = { ...task, completed: !task.completed };
-      await fetch(`http://localhost:3000/task/${taskId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedTask),
-      });
-      setTaskList((prevTaskList) =>
-        prevTaskList.map((task) =>
-          task.id === taskId ? { ...task, completed: !task.completed } : task
-        )
-      );
-    } catch (error) {
-     console.error('Error:', error);
-    }
+  const handleTaskComplete = (taskId) => {
+    setTaskList((prevTaskList) =>
+      prevTaskList.map((task) =>
+        task.id === taskId ? { ...task, completed: !task.completed } : task
+      )
+    );
+  };
+
+  const handleFetchTasks = () => {
+    setFetchButtonClicked(true);
   };
 
   const handleToggleForm = () => {
-    setShowForm((prevState) => !prevState);
+    setShowForm(!showForm);
   };
 
   return (
@@ -138,18 +110,22 @@ const App = () => {
       )}
       {showForm && (
         <div className="form-overlay">
-          <TaskForm
-            onAddTask={handleAddTask}
-            onLoadTasks={setTaskList}
-          />
+          <TaskForm onAddTask={handleAddTask} />
         </div>
       )}
-      <TaskList tasks={taskList} onTaskComplete={handleTaskComplete} />
+      {!fetchButtonClicked && (
+        <button onClick={handleFetchTasks}>Fetch Tasks</button>
+      )}
+      {fetchButtonClicked && (
+        <TaskList tasks={taskList} onTaskComplete={handleTaskComplete} />
+      )}
     </div>
   );
 };
 
 export default App;
+
+
 
 
 
