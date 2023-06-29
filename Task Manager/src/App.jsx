@@ -76,14 +76,27 @@ const App = () => {
     }
   }, [fetchButtonClicked]);
 
-  const handleAddTask = (newTask) => {
+  const handleAddTask = async (newTask) => {
     const newTaskObj = {
       id: Date.now(),
       title: newTask,
       completed: false,
     };
-    setTaskList((prevTaskList) => [...prevTaskList, newTaskObj]);
-    setShowForm(false);
+
+    try {
+      await fetch('http://localhost:3000/task', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newTaskObj),
+      });
+
+      setTaskList((prevTaskList) => [...prevTaskList, newTaskObj]);
+      setShowForm(false);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   const handleTaskComplete = (taskId) => {
@@ -108,22 +121,22 @@ const App = () => {
       {!showForm && (
         <button onClick={handleToggleForm}>Add Task</button>
       )}
+      {!fetchButtonClicked && (
+        <button onClick={handleFetchTasks}>Fetch Tasks</button>
+      )}
       {showForm && (
         <div className="form-overlay">
           <TaskForm onAddTask={handleAddTask} />
         </div>
       )}
-      {!fetchButtonClicked && (
-        <button onClick={handleFetchTasks}>Fetch Tasks</button>
-      )}
-      {fetchButtonClicked && (
-        <TaskList tasks={taskList} onTaskComplete={handleTaskComplete} />
-      )}
+      <TaskList tasks={taskList} onTaskComplete={handleTaskComplete} />
     </div>
   );
 };
 
 export default App;
+
+
 
 
 
