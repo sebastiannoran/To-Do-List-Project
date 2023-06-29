@@ -1,37 +1,133 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './style.css';
-import TaskList from './taskList'
-import TaskForm from './taskForm' 
+
+const TaskList = ({ tasks, onTaskComplete }) => {
+  const handleTaskComplete = (taskId) => {
+    onTaskComplete(taskId);
+  };
+
+  return (
+    <ul>
+      {tasks.map((task) => (
+        <li
+          key={task.id}
+          className={`task ${task.completed ? 'completed' : ''}`}
+        >
+          <input
+            type="checkbox"
+            checked={task.completed}
+            onChange={() => handleTaskComplete(task.id)}
+          />
+          {task.title}
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+const TaskForm = ({ onAddTask, onLoadTasks }) => {
+  const [newTask, setNewTask] = useState('');
+
+  const handleInputChange = (event) => {
+    setNewTask(event.target.value);
+  };
+
+  const handleAddTask = async (event) => {
+    event.preventDefault();
+    if (newTask.trim() !== '') {
+      try {
+        const response = await fetch('http://localhost:3000/task', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            title: newTask,
+            completed: false,
+          }),
+        });
+        const task = await response.json();
+        onAddTask(task);
+        setNewTask('');
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  };
+
+  const handleLoadTasks = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/task');
+      const tasks = await response.json();
+      onLoadTasks(tasks);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+
+  return (
+    <div className="form-container">
+      <form onSubmit={handleAddTask}>
+        <input
+          type="text"
+          value={newTask}
+          onChange={handleInputChange}
+          placeholder="Enter a new task"
+        />
+        <button type="submit">Add Task</button>
+      </form>
+      <button onClick={handleLoadTasks}>Load Tasks</button>
+    </div>
+  );
+};
 
 const App = () => {
-  const [taskList, setTaskList] = useState([
-    { id: 1, title: 'Walk the dog', completed: false },
-    { id: 2, title: 'Empty the trash', completed: false },
-    { id: 3, title: 'Cook dinner', completed: false },
-  ]);
-
+  const [taskList, setTaskList] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
-  const handleAddTask = (newTask) => {
-    const newTaskObj = {
-      id: Date.now(),
-      title: newTask,
-      completed: false,
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/task');
+        const tasks = await response.json();
+        setTaskList(tasks);
+      } catch (error) {
+        console.error('Error:', error);
+      }
     };
-    setTaskList((prevTaskList) => [...prevTaskList, newTaskObj]);
+
+    fetchTasks();
+  }, []);
+
+  const handleAddTask = (task) => {
+    setTaskList((prevTaskList) => [...prevTaskList, task]);
     setShowForm(false);
   };
 
-  const handleTaskComplete = (taskId) => {
-    setTaskList((prevTaskList) =>
-      prevTaskList.map((task) =>
-        task.id === taskId ? { ...task, completed: !task.completed } : task
-      )
-    );
+  const handleTaskComplete = async (taskId) => {
+    try {
+      const task = taskList.find((task) => task.id === taskId);
+      const updatedTask = { ...task, completed: !task.completed };
+      await fetch(`http://localhost:3000/task/${taskId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedTask),
+      });
+      setTaskList((prevTaskList) =>
+        prevTaskList.map((task) =>
+          task.id === taskId ? { ...task, completed: !task.completed } : task
+        )
+      );
+    } catch (error) {
+     console.error('Error:', error);
+    }
   };
 
   const handleToggleForm = () => {
-    setShowForm(!showForm);
+    setShowForm((prevState) => !prevState);
   };
 
   return (
@@ -42,7 +138,10 @@ const App = () => {
       )}
       {showForm && (
         <div className="form-overlay">
-          <TaskForm onAddTask={handleAddTask} />
+          <TaskForm
+            onAddTask={handleAddTask}
+            onLoadTasks={setTaskList}
+          />
         </div>
       )}
       <TaskList tasks={taskList} onTaskComplete={handleTaskComplete} />
@@ -51,6 +150,9 @@ const App = () => {
 };
 
 export default App;
+
+
+
 
 
 
