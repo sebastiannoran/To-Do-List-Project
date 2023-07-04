@@ -22,6 +22,7 @@ body {
 ul {
   list-style-type: none;
   padding: 0;
+  padding-left: 0;
   margin: 0;
 }
 
@@ -86,10 +87,14 @@ button:hover {
 }
 
 
+.task {
+  list-style: none;
+  margin-bottom: 5px;
+}
 
-
-
-
+.completed {
+  text-decoration: line-through;
+}
 
 /*:root {
   line-height: 1.5;
