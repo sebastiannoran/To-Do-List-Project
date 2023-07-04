@@ -1,59 +1,7 @@
 import { useState, useEffect } from 'react';
 import './style.css';
-
-const TaskList = ({ tasks, onTaskComplete }) => {
-  const handleTaskComplete = (taskId) => {
-    onTaskComplete(taskId);
-  };
-
-  return (
-    <ul>
-      {tasks.map((task) => (
-        <li
-          key={task.id}
-          className={`task ${task.completed ? 'completed' : ''}`}
-        >
-          <input
-            type="checkbox"
-            checked={task.completed}
-            onChange={() => handleTaskComplete(task.id)}
-          />
-          {task.title}
-        </li>
-      ))}
-    </ul>
-  );
-};
-
-const TaskForm = ({ onAddTask }) => {
-  const [newTask, setNewTask] = useState('');
-
-  const handleInputChange = (event) => {
-    setNewTask(event.target.value);
-  };
-
-  const handleAddTask = (event) => {
-    event.preventDefault();
-    if (newTask.trim() !== '') {
-      onAddTask(newTask);
-      setNewTask('');
-    }
-  };
-
-  return (
-    <div className="form-container">
-      <form onSubmit={handleAddTask}>
-        <input
-          type="text"
-          value={newTask}
-          onChange={handleInputChange}
-          placeholder="Enter a new task"
-        />
-        <button type="submit">Add Task</button>
-      </form>
-    </div>
-  );
-};
+import TaskForm from './Functions/TaskForm';
+import TaskList from './Functions/TaskList';
 
 const App = () => {
   const [taskList, setTaskList] = useState([]);
@@ -137,22 +85,3 @@ const App = () => {
 export default App;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// for the next iteration of the project we need to
-// Incorporate a Form component in your app
-// Style the Form Component 
-// Refactor your component hierarchy to lift and handle State in the proper higher-level components 
-
-// 
