@@ -10,14 +10,13 @@ const App = () => {
         <Navbar />
 
         <div className="container">
-          <h1>To-Do List</h1>
-
           <div className="content">
             <Routes>
               <Route
                 path="/"
                 element={
                   <>
+                    <h1>To-Do List</h1>
                     <h2>Welcome to the Home Page</h2>
                   </>
                 }

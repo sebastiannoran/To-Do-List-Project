@@ -29,36 +29,38 @@ const TaskPage = ({ category }) => {
   };
 
   const handleAddTask = async (event) => {
-    event.preventDefault();
-    if (newTask.trim() !== '') {
-      const newTaskObj = {
-        id: Date.now(),
-        category,
-        title: newTask,
-        completed: false,
-      };
+  event.preventDefault();
+  if (newTask.trim() !== '') {
+    const newTaskObj = {
+      id: Date.now(),
+      category,
+      title: newTask,
+      completed: false,
+    };
 
-      try {
-        await fetch(
-          category === 'general'
-            ? 'http://localhost:3000/tasks'
-            : 'http://localhost:3001/fitness',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newTaskObj),
-          }
-        );
+    try {
+      await fetch(
+        category === 'general'
+          ? 'http://localhost:3000/tasks'
+          : 'http://localhost:3001/fitness',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newTaskObj),
+        }
+      );
 
-        setTasks((prevTasks) => [...prevTasks, newTaskObj]);
-        setNewTask('');
-      } catch (error) {
-        console.error('Error:', error);
-      }
+      setTasks((prevTasks) => [...prevTasks, newTaskObj]);
+      setNewTask('');
+    } catch (error) {
+      console.error('Error:', error);
     }
-  };
+  }
+};
+
+
 
   return (
     <div>
