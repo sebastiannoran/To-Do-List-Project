@@ -1,10 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './Components/Navbar';
-import TaskList from './Functions/TaskList';
-import TaskForm from './Functions/TaskForm';
-import Fitness from './Components/Fitness';
-
+// import TaskList from './Functions/TaskList';
+// import TaskForm from './Functions/TaskForm';
+import TaskPage from './Functions/TaskPage';
 
 const App = () => {
   return (
@@ -26,23 +25,11 @@ const App = () => {
             />
             <Route
               path="/general-tasks"
-              element={
-                <>
-                  <h2>General Tasks</h2>
-                  <TaskList categoryId={1} />
-                  <TaskForm categoryId={1} />
-                </>
-              }
+              element={<TaskPage category="General" />}
             />
             <Route
               path="/fitness-tasks"
-              element={
-                <>
-                  <h2>Fitness Tasks</h2>
-                  <TaskList categoryId={2} />
-                  <TaskForm categoryId={2} />
-                </>
-              }
+              element={<TaskPage category="Fitness" />}
             />
           </Routes>
         </div>
