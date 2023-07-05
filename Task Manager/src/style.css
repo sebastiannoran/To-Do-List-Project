@@ -30,18 +30,6 @@ h1 {
   line-height: 1.1;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #5c6ac4;
-  color: black;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
 
 button:hover {
   border-color: #646cff;
@@ -83,6 +71,34 @@ button:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.navbar {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+.navbar-brand {
+  font-weight: bold;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+}
+
+.nav-item {
+  margin-right: 15px;
+}
+
+.nav-link {
+  color: #333;
+}
+
+.nav-link:hover {
+  color: #000;
 }
 
 

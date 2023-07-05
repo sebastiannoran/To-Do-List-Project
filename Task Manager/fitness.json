@@ -1,0 +1,16 @@
+{
+    "fitness": [
+      {
+        "id": 1,
+        "category": "Fitness",
+        "title": "Task 1",
+        "completed": false
+      },
+      {
+        "id": 2,
+        "category": "Fitness",
+        "title": "Task 2",
+        "completed": true
+      }
+    ]
+  }
