@@ -61,12 +61,7 @@ const TaskPage = ({ category }) => {
 };
 
 const handleTaskComplete = async (taskId) => {
-  const updatedTasks = tasks.map((task) => {
-    if (task.id === taskId) {
-      return { ...task, completed: !task.completed };
-    }
-    return task;
-  });
+  const updatedTasks = tasks.filter((task) => task.id !== taskId);
 
   try {
     await fetch(
@@ -74,11 +69,7 @@ const handleTaskComplete = async (taskId) => {
         ? `http://localhost:3000/tasks/${taskId}`
         : `http://localhost:3001/fitness/${taskId}`,
       {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedTasks.find((task) => task.id === taskId)),
+        method: 'DELETE',
       }
     );
 

@@ -1,39 +1,9 @@
 {
   "fitness": [
     {
-      "id": 1,
-      "category": "Fitness",
-      "title": "Task 1",
-      "completed": false
-    },
-    {
-      "id": 2,
-      "category": "Fitness",
-      "title": "Task 2",
-      "completed": true
-    },
-    {
-      "id": 1688534897111,
-      "category": "General",
-      "title": "enter",
-      "completed": false
-    },
-    {
-      "id": 1688535122357,
-      "category": "General",
-      "title": "h",
-      "completed": false
-    },
-    {
-      "id": 1688537805021,
+      "id": 1688560202170,
       "category": "fitness",
-      "title": "f",
-      "completed": false
-    },
-    {
-      "id": 1688537807055,
-      "category": "fitness",
-      "title": "fefefefe",
+      "title": "add task",
       "completed": false
     }
   ]

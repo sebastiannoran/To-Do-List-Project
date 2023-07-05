@@ -1,24 +1,6 @@
 {
   "tasks": [
     {
-      "id": 1,
-      "category": "General",
-      "title": "Task 1",
-      "completed": false
-    },
-    {
-      "id": 1688531798787,
-      "category": "general",
-      "title": "true",
-      "completed": false
-    },
-    {
-      "id": 1688537747322,
-      "category": "general",
-      "title": "c",
-      "completed": false
-    },
-    {
       "id": 1688537802503,
       "category": "general",
       "title": "f",
