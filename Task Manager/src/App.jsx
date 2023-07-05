@@ -6,6 +6,7 @@ import {BrowserRouter as Router} from 'react-router-dom';
 import {Routes as Routes} from 'react-router-dom';
 import {Route as Route} from 'react-router-dom';
 import {Link as Link} from 'react-router-dom';
+import Fitness from './Components/Fitness';
 
 const App = () => {
   const [taskList, setTaskList] = useState([]);
@@ -16,9 +17,12 @@ const App = () => {
     if (fetchButtonClicked) {
       const fetchTasks = async () => {
         try {
-          const response = await fetch('http://localhost:3000/task');
-          const tasks = await response.json();
-          setTaskList(tasks);
+          const response = await fetch('http://localhost:3000/categories');
+          const categories = await response.json();
+          const generalCategory = categories.find((category) => category.id === 1);
+          if (generalCategory) {
+            setTaskList(generalCategory.tasks);
+          }
         } catch (error) {
           console.error('Error:', error);
         }
@@ -36,7 +40,7 @@ const App = () => {
     };
 
     try {
-      await fetch('http://localhost:3000/task', {
+      await fetch('http://localhost:3000/categories/1/tasks', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,24 +72,50 @@ const App = () => {
   };
 
   return (
-    <div>
-      <h1>To-Do List</h1>
-      {!showForm && (
-        <button onClick={handleToggleForm}>Add Task</button>
-      )}
-      {!fetchButtonClicked && (
-        <button onClick={handleFetchTasks}>Fetch Tasks</button>
-      )}
-      {showForm && (
-        <div className="form-overlay">
-          <TaskForm onAddTask={handleAddTask} />
-        </div>
-      )}
-      <TaskList tasks={taskList} onTaskComplete={handleTaskComplete} />
-    </div>
+    <Router>
+      <div>
+        <h1>To-Do List</h1>
+        {showForm && (
+          <div className="form-overlay">
+            <TaskForm onAddTask={handleAddTask} />
+          </div>
+        )}
+
+        {/* General Tasks Button */}
+        <Link to="/general-tasks">
+          <button>General Tasks</button>
+        </Link>
+
+        {/* Fitness Tasks Button */}
+        <Link to="/fitness-tasks">
+          <button>Fitness Tasks</button>
+        </Link>
+
+        {/* Home Button */}
+        <Link to="/">
+          <button>Home</button>
+        </Link>
+
+        <Routes>
+          <Route
+            path="/general-tasks"
+            element={
+              <>
+                <TaskList tasks={taskList} onTaskComplete={handleTaskComplete} />
+                {!showForm && (
+                  <button onClick={handleToggleForm}>Add Task</button>
+                )}
+                {!fetchButtonClicked && (
+                  <button onClick={handleFetchTasks}>Fetch Tasks</button>
+                )}
+              </>
+            }
+          />
+          <Route path="/fitness-tasks" element={<Fitness />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 
 export default App;
-
-
