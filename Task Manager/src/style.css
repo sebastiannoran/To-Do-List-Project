@@ -101,6 +101,16 @@ button:hover {
   color: #000;
 }
 
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content {
+  margin-top: 20px;
+}
+
 
 /*:root {
   line-height: 1.5;
