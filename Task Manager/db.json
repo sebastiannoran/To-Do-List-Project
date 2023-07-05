@@ -1,14 +1,14 @@
 {
-  "task": [
+  "categories": [
     {
-      "id": 1688513994848,
-      "title": "why",
-      "completed": false
+      "id": 1,
+      "name": "General",
+      "tasks": []
     },
     {
-      "id": 1688514774726,
-      "title": "hello",
-      "completed": false
+      "id": 2,
+      "name": "Fitness",
+      "tasks": []
     }
   ]
 }
